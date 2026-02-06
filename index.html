@@ -2,14 +2,15 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OUROCAP - Sistema em Nuvem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>OUROCAP - Sistema em Nuvem</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         /* ============================================================
-           1. CSS GERAL
+           1. CSS GERAL (MANTIDO ORIGINAL)
            ============================================================ */
         :root {
             --primary: #FFD700;
@@ -23,16 +24,16 @@
             --info: #29b6f6;
         }
 
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
 
         /* ============================================================
-           2. TELA DE LOGIN
+           2. TELA DE LOGIN (RESTAURADO COM BACKGROUND.PNG)
            ============================================================ */
         #login-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('background.png') no-repeat center center;
+            background: url('background.png') no-repeat center center; /* RESTAURADO */
             background-size: cover;
             display: flex; 
             align-items: center;
@@ -55,7 +56,7 @@
             width: 100%; max-width: 400px;
             text-align: center;
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-            margin: 20px; /* Margem para não colar na borda em celulares */
+            margin: 20px;
         }
 
         .login-box h1 {
@@ -75,14 +76,15 @@
 
 
         /* ============================================================
-           3. CSS DA INTERFACE DO SISTEMA (DESKTOP PADRÃO)
+           3. CSS DA INTERFACE DO SISTEMA (DESKTOP)
            ============================================================ */
         nav { width: 240px; border-right: 1px solid var(--border); padding: 40px 20px; display: flex; flex-direction: column; flex-shrink: 0; justify-content: space-between; overflow-y: auto; }
         .nav-top { display: flex; flex-direction: column; }
         .logo { font-family: 'Archivo Black'; color: var(--primary); font-size: 1.5rem; margin-bottom: 40px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
-        .nav-item { padding: 14px; margin-bottom: 5px; border-radius: 12px; cursor: pointer; color: var(--dim); transition: 0.3s; font-size: 0.9rem; font-weight: 600; white-space: nowrap; }
+        .nav-item { padding: 14px; margin-bottom: 5px; border-radius: 12px; cursor: pointer; color: var(--dim); transition: 0.3s; font-size: 0.9rem; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 10px; }
         .nav-item:hover { background: #1a1a1a; color: #fff; }
         .nav-item.active { background: var(--primary); color: #000; }
+        .nav-item i { font-size: 1.2rem; } /* Ícone no desktop */
 
         .user-area { border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto; }
         .user-email { font-size: 0.75rem; color: #fff; margin-bottom: 10px; word-break: break-all; display: block; text-align: center; font-weight: bold; }
@@ -95,7 +97,7 @@
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .card { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 25px; overflow-x: auto; /* Permite scroll na tabela se precisar */ }
+        .card { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 25px; overflow-x: auto; }
         h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
         h2::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
@@ -122,7 +124,6 @@
         .btn-add { background: var(--success); color: #000; margin-top: 10px; }
         .btn-info { background: var(--info); color: #000; margin-top: 10px; }
         
-        /* Ajuste de botões em container flex */
         .btn-group-responsive { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-group-responsive button { flex: 1; white-space: nowrap; }
 
@@ -130,7 +131,7 @@
         .kpi span { font-size: 0.7rem; color: var(--dim); text-transform: uppercase; }
         .kpi h3 { font-size: 1.6rem; margin-top: 10px; }
 
-        table { width: 100%; border-collapse: collapse; min-width: 600px; /* Garante que a tabela não esmague no mobile */ }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th { text-align: left; padding: 15px; color: var(--dim); font-size: 0.7rem; border-bottom: 1px solid var(--border); text-transform: uppercase; }
         td { padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.85rem; vertical-align: middle; }
         .val-in { color: var(--success); }
@@ -145,104 +146,156 @@
         .btn-stock:hover { background: var(--primary); color: #000; border-color: var(--primary); }
 
         /* ============================================================
-           5. CSS RESPONSIVO (MOBILE E TABLET)
+           NOVO: BOTTOM NAVIGATION (SÓ APARECE NO MOBILE)
+           ============================================================ */
+        .bottom-nav { display: none; } /* Escondido no Desktop */
+
+       /* ============================================================
+           5. CSS RESPONSIVO (MOBILE - CORREÇÃO DEFINITIVA)
            ============================================================ */
         @media (max-width: 900px) {
-            /* Mudar layout principal de linha para coluna */
+            /* 1. RESET DE ESTRUTURA PARA MOBILE */
             body { 
                 flex-direction: column; 
-                height: auto; 
-                overflow-y: auto; /* Permite scroll da página toda no mobile */
-            }
-
-            /* Nav vira barra superior rolável */
-            nav { 
-                width: 100%; 
-                height: auto; 
-                border-right: none; 
-                border-bottom: 1px solid var(--border); 
-                padding: 15px; 
-                flex-direction: row; 
-                align-items: center;
-                overflow-x: auto; /* Scroll horizontal no menu */
-                background: var(--card);
-                position: sticky;
-                top: 0;
-                z-index: 100;
-            }
-
-            .nav-top { 
-                flex-direction: row; 
-                gap: 10px; 
-                width: 100%;
-                align-items: center;
-            }
-
-            .logo { 
-                margin-bottom: 0; 
-                border-bottom: none; 
-                padding-bottom: 0; 
-                margin-right: 20px;
-                font-size: 1.2rem;
-            }
-
-            .nav-item { 
-                padding: 8px 15px; 
-                margin-bottom: 0; 
-                font-size: 0.8rem;
-                background: #111;
-                border: 1px solid #333;
-            }
-
-            .user-area {
-                display: none; /* Esconde logout no mobile para economizar espaço, ou mover para o topo se preferir */
+                height: 100%; 
+                overflow-y: auto; 
+                background: #000; /* Fundo total preto no mobile */
             }
             
-            /* Para exibir o logout no mobile de forma compacta, se quiser, descomente: */
-            /* .user-area { 
-                display: block; 
-                border-top: none; 
-                padding-top: 0; 
-                margin-left: auto; 
-            }
-            .user-email { display: none; }
-            .btn-logout { width: auto; padding: 5px 10px; font-size: 0.7rem; }
-            */
+            nav { display: none; } /* Esconde menu lateral */
 
             main { 
-                padding: 15px; 
-                height: auto;
-                overflow: visible;
+                padding: 10px; 
+                padding-bottom: 90px; /* Espaço para o menu inferior */
+                width: 100%; 
+                overflow-x: hidden; /* Impede rolagem horizontal da página inteira */
             }
 
-            .container { padding-bottom: 50px; }
-
-            /* Transformar Grids em Coluna Única */
-            .grid-3, .grid-4, .grid-2 { 
-                grid-template-columns: 1fr; 
-                gap: 15px;
+            .container {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
             }
 
-            /* KPIs do Dashboard em 2 colunas (melhor que 1 fila enorme) */
-            .dash-row { 
-                grid-template-columns: 1fr 1fr; 
-                gap: 10px;
+            /* 2. AJUSTE DOS CARDS (Containers) */
+            .card {
+                padding: 15px;
+                margin-bottom: 15px;
+                width: 100%;
+                border-radius: 15px;
+                /* Garante que o card não exceda a tela */
+                box-sizing: border-box; 
+                overflow: hidden; 
             }
 
-            .kpi { padding: 15px; }
-            .kpi h3 { font-size: 1.2rem; }
+            /* 3. INPUTS E FORMULÁRIOS RESPONSIVOS */
+            .grid-3, .grid-4, .grid-2, .dash-row, .grid-full { 
+                display: flex; 
+                flex-direction: column; 
+                gap: 15px; 
+            }
 
-            /* Tabelas com Scroll */
-            .card { padding: 15px; }
+            .field { width: 100%; }
             
-            /* Botões */
-            .btn { width: 100%; margin-left: 0 !important; margin-top: 10px; }
+            input, select, textarea {
+                width: 100% !important; /* Força largura total */
+                max-width: 100%;
+                box-sizing: border-box; /* O padding fica DENTRO da largura */
+                font-size: 16px; /* Evita zoom no iPhone */
+            }
+
+            /* Botões ocupam largura total e têm espaço */
+            .btn, .btn-sec, .btn-add, .btn-info, .btn-group-responsive button {
+                width: 100%;
+                margin: 5px 0;
+                margin-left: 0 !important;
+            }
             .btn-group-responsive { flex-direction: column; }
-            .btn-group-responsive button { width: 100%; margin: 0; }
+
+            /* 4. CORREÇÃO CRÍTICA DAS TABELAS (Listas em Cards) */
+            
+            /* Remove a trava de 600px do desktop que quebrava o mobile */
+            table { min-width: 0 !important; width: 100%; display: block; border: none; }
+            thead { display: none; } /* Esconde cabeçalho da tabela */
+            tbody { display: block; width: 100%; }
+
+            /* Transforma cada linha (TR) em um Card Bonito */
+            tr {
+                display: flex;
+                flex-direction: column;
+                background: #1e1e1e;
+                border: 1px solid #333;
+                border-radius: 12px;
+                padding: 15px;
+                margin-bottom: 15px;
+                position: relative;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            }
+
+            /* Ajusta as células (TD) */
+            td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 0;
+                border-bottom: 1px solid #2a2a2a;
+                width: 100%;
+                font-size: 0.95rem;
+                color: #ddd;
+                /* Quebra de texto automática para não estourar a tela */
+                word-break: break-word; 
+                white-space: normal;
+            }
+            
+            td:last-child { border-bottom: none; padding-bottom: 0; padding-top: 15px; justify-content: flex-end; gap: 10px; }
+
+            /* --- ESTILIZAÇÃO ESPECÍFICA DAS LISTAS --- */
+
+            /* PRODUÇÃO (#prod) */
+            #lista-prod td:nth-of-type(1) { /* ID da OS */
+                font-size: 1.2rem; font-weight: 800; color: var(--primary); border-bottom: none; padding-bottom: 0;
+            }
+            #lista-prod td:nth-of-type(1)::before { content: 'OS: '; color: #666; font-size: 0.8rem; margin-right: 5px; }
+
+            #lista-prod td:nth-of-type(3) { /* Descrição Pneu */
+                font-size: 1.1rem; color: #fff; font-weight: 600; padding: 5px 0; border: none;
+            }
+            
+            #lista-prod td:nth-of-type(4) { /* Cliente */
+                font-size: 0.85rem; color: #888;
+            }
+
+            #lista-prod td:nth-of-type(5) { /* Status */
+                background: #111; padding: 8px; border-radius: 6px; justify-content: center; font-weight: bold; margin-top: 5px;
+            }
+
+            /* FINANCEIRO (#fin) */
+            #lista-fin tr { border-left: 4px solid var(--primary); }
+            #lista-fin td:nth-of-type(2) { font-size: 1rem; color: #fff; font-weight: 500; } /* Descrição */
+            #lista-fin td:nth-of-type(3) { font-size: 1.4rem; font-weight: 800; border: none; padding-top: 5px; } /* Valor */
+
+            /* CLIENTES (#clientes) */
+            #lista-clientes td:nth-of-type(1) { flex-direction: column; align-items: flex-start; gap: 2px; }
+            #lista-clientes td:nth-of-type(1) div:first-child { font-size: 1.1rem; color: var(--primary); font-weight: bold; }
+
+            /* 5. BOTTOM NAVIGATION FIXO */
+            .bottom-nav {
+                display: flex; position: fixed; bottom: 0; left: 0; width: 100%;
+                background: #141414; border-top: 1px solid #222;
+                justify-content: space-around; align-items: center; height: 65px;
+                z-index: 9999; padding-bottom: env(safe-area-inset-bottom);
+                box-shadow: 0 -5px 20px rgba(0,0,0,0.8);
+            }
+            .b-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #666; background: none; border: none; width: 100%; height: 100%; padding: 0; }
+            .b-nav-item i { font-size: 24px; margin-bottom: 4px; }
+            .b-nav-item span { font-size: 10px; font-weight: 600; }
+            .b-nav-item.active { color: var(--primary); }
+            .b-nav-item.active i { transform: scale(1.1); transition: 0.2s; }
         }
 
         /* ============================================================
-           4. CSS DE IMPRESSÃO (Mantido igual)
+           4. CSS DE IMPRESSÃO (MANTIDO 100% IGUAL AO ORIGINAL)
            ============================================================ */
         #printArea { display: none; }
 
@@ -329,7 +382,7 @@
             .sig-resp { float: left; }
             .sig-cli { float: right; }
 
-            /* MODO RECIBO (80MM) */
+            /* MODO RECIBO (80MM) - RESTAURADO */
             .modo-recibo .print-container { height: auto; width: 80mm; border: none; margin: 0; padding: 5px; display: block; }
             .modo-recibo .print-header { border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; flex-direction: column; text-align: center; align-items: center; }
             .modo-recibo .print-logo { max-width: 60mm; max-height: 80px; margin-bottom: 5px; }
@@ -372,15 +425,16 @@
     </div>
 
     <div id="app-content" style="display: none;">
+        
         <nav>
             <div class="nav-top">
                 <div class="logo">OUROCAP</div>
-                <div class="nav-item active" onclick="showPage('dash', this)">Dashboard</div>
-                <div class="nav-item" onclick="showPage('clientes', this)">Clientes</div> 
-                <div class="nav-item" onclick="showPage('os', this)">Nova OS</div>
-                <div class="nav-item" onclick="showPage('prod', this)">Produção</div>
-                <div class="nav-item" onclick="showPage('stock', this)">Estoque</div>
-                <div class="nav-item" onclick="showPage('fin', this)">Financeiro</div>
+                <div class="nav-item active" onclick="showPage('dash', this)"><i class="material-icons">dashboard</i> &nbsp; Dashboard</div>
+                <div class="nav-item" onclick="showPage('clientes', this)"><i class="material-icons">people</i> &nbsp; Clientes</div> 
+                <div class="nav-item" onclick="showPage('os', this)"><i class="material-icons">add_circle</i> &nbsp; Nova OS</div>
+                <div class="nav-item" onclick="showPage('prod', this)"><i class="material-icons">build</i> &nbsp; Produção</div>
+                <div class="nav-item" onclick="showPage('stock', this)"><i class="material-icons">inventory_2</i> &nbsp; Estoque</div>
+                <div class="nav-item" onclick="showPage('fin', this)"><i class="material-icons">attach_money</i> &nbsp; Financeiro</div>
             </div>
             
             <div class="user-area">
@@ -567,6 +621,15 @@
 
             </div>
         </main>
+        
+        <div class="bottom-nav">
+            <button class="b-nav-item active" onclick="showPage('dash', this)"><i class="material-icons">dashboard</i><span>Início</span></button>
+            <button class="b-nav-item" onclick="showPage('os', this)"><i class="material-icons">add_circle</i><span>OS</span></button>
+            <button class="b-nav-item" onclick="showPage('prod', this)"><i class="material-icons">build</i><span>Prod</span></button>
+            <button class="b-nav-item" onclick="showPage('clientes', this)"><i class="material-icons">people</i><span>Clientes</span></button>
+            <button class="b-nav-item" onclick="showPage('fin', this)"><i class="material-icons">payments</i><span>Fin</span></button>
+        </div>
+
     </div>
 
     <div id="printArea">
@@ -703,9 +766,19 @@
         // --- FUNÇÕES DE INTERFACE (UI) ---
         window.showPage = function(id, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Remove active de todos os navs (desktop e mobile)
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.b-nav-item').forEach(i => i.classList.remove('active'));
+            
             document.getElementById(id).classList.add('active');
-            el.classList.add('active');
+            
+            // Adiciona active no elemento clicado
+            if(el) el.classList.add('active');
+            
+            // Sincroniza visualmente Desktop <-> Mobile se necessário
+            // (Ex: se clicou no mobile, ativa o correspondente no desktop visualmente apenas pra consistência se redimensionar)
+            // Lógica simplificada: Apenas ativa a classe no botão que foi clicado.
+            
             if(id === 'dash') updateDashboard();
         }
 
