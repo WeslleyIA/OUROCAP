@@ -759,6 +759,9 @@
                 listaClientes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderClientes();
                 updateClientSuggestions();
+            }, (error) => {
+                console.error("Erro ao carregar clientes:", error);
+                // alert("Erro ao carregar clientes: " + error.message);
             });
 
             // 2. OS
@@ -828,10 +831,10 @@
             try {
                 await addDoc(collection(db, "clientes"), novoCliente);
                 e.target.reset();
-                alert("Cliente salvo na nuvem!");
+                alert("Cliente salvo na nuvem com sucesso!");
             } catch (err) {
-                console.error("Erro ao salvar:", err);
-                alert("Erro ao salvar. Verifique sua conexão.");
+                console.error("Erro detalhado ao salvar:", err);
+                alert("ERRO AO SALVAR:\n" + err.message + "\n\nDica: Verifique se as 'Regras de Segurança' do seu Firestore permitem gravação.");
             }
         });
 
@@ -920,8 +923,8 @@
                 document.getElementById('os-qtd').value = 1;
 
             } catch(err) {
-                console.error(err);
-                alert("Erro ao salvar OS. Tente novamente.");
+                console.error("Erro ao salvar OS:", err);
+                alert("ERRO AO SALVAR OS:\n" + err.message);
             }
         });
 
