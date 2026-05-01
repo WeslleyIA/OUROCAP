@@ -145,6 +145,18 @@
         .btn-stock { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--dim); background: transparent; color: #fff; cursor: pointer; margin: 0 5px; }
         .btn-stock:hover { background: var(--primary); color: #000; border-color: var(--primary); }
 
+        /* Estilos para Lista de Itens na OS */
+        .item-row-os { display: flex; align-items: center; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border); }
+        .item-info-os { display: flex; flex-direction: column; gap: 2px; }
+        .item-info-os b { color: var(--primary); font-size: 0.9rem; }
+        .item-info-os span { color: var(--dim); font-size: 0.75rem; }
+        .btn-del-item { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; }
+        
+        .print-table-items { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        .print-table-items th { background: #eee !important; color: #000 !important; border: 1px solid #000; padding: 5px; font-size: 9pt; }
+        .print-table-items td { border: 1px solid #000; padding: 5px; font-size: 10pt; color: #000 !important; text-align: center; }
+        .print-table-items td:first-child { text-align: left; }
+
         /* ============================================================
            NOVO: BOTTOM NAVIGATION (SÓ APARECE NO MOBILE)
            ============================================================ */
@@ -153,7 +165,7 @@
        /* ============================================================
            5. CSS RESPONSIVO (MOBILE - CORREÇÃO DEFINITIVA)
            ============================================================ */
-        @media (max-width: 900px) {
+        @media screen and (max-width: 900px) {
             /* 1. RESET DE ESTRUTURA PARA MOBILE */
             body { 
                 flex-direction: column; 
@@ -300,106 +312,149 @@
         #printArea { display: none; }
 
         @media print {
-            @page { margin: 10mm; size: A4; } 
+            @page { margin: 5mm; size: auto; } 
             
-            body, html { height: 100%; margin: 0; background: white !important; }
-            body * { display: none !important; }
-            
-            #printArea, #printArea * { display: block !important; visibility: visible !important; }
+            /* Esconde elementos da interface do sistema na impressão */
+            nav, .bottom-nav, main, #login-screen, .btn, .btn-group-responsive, .user-area { display: none !important; }
             
             #printArea { 
-                position: absolute; top: 0; left: 0; width: 100%; 
-                background: white !important; color: black !important; 
+                display: block !important; 
+                visibility: visible !important;
+                position: absolute; 
+                top: 0; left: 0; width: 100%; 
+                background: white !important; 
+                color: black !important; 
                 padding: 0; margin: 0;
             }
+            
+            #printArea * { visibility: visible !important; }
+            /* Garante que tabelas mantenham seu formato original apenas no A4 */
+            #printArea:not(.modo-recibo) table { display: table !important; }
+            #printArea:not(.modo-recibo) tr { display: table-row !important; }
+            #printArea:not(.modo-recibo) td, #printArea:not(.modo-recibo) th { display: table-cell !important; }
 
             .print-container { 
                 height: auto; 
                 display: flex; 
                 flex-direction: column; 
                 justify-content: flex-start; 
-                gap: 20px;
+                gap: 8px; /* Reduzido de 20px */
                 font-family: 'Arial', sans-serif;
+                max-width: 100%;
             }
             
             .print-content { 
                 display: flex;
                 flex-direction: column;
-                gap: 15px; 
+                gap: 8px; 
             }
 
             .print-header { 
                 display: flex; 
                 justify-content: space-between; 
-                align-items: flex-start; 
-                border-bottom: 4px solid #000; 
-                padding-bottom: 10px; 
-                margin-bottom: 10px; 
+                align-items: center; 
+                border-bottom: 2px solid #000; 
+                padding-bottom: 5px; 
+                margin-bottom: 5px; 
             }
-            .print-logo { max-width: 130px; height: auto; object-fit: contain; }
-            .os-num { text-align: right; }
-            .os-num p { font-size: 11pt; margin: 0; font-weight: bold; }
-            .os-num h2 { font-size: 26pt; margin: 0; color: #000; line-height: 1; } 
-            .os-num span { font-size: 11pt; display: block; margin-top: 5px;}
+            .print-logo { max-width: 80px; height: auto; } 
+            .os-num { text-align: right; line-height: 1.1; }
+            .os-num p { font-size: 8pt; margin: 0; font-weight: bold; text-transform: uppercase; }
+            .os-num h2 { font-size: 22pt; margin: 0; color: #000; font-weight: 900; } 
+            .os-num span { font-size: 9pt; display: block; }
 
-            .print-section { border: 2px solid #000; border-radius: 8px; overflow: hidden; }
+            .print-section { border: 1px solid #000; border-radius: 4px; margin-bottom: 5px; }
             .print-section h3 { 
-                background: #ddd; padding: 8px 15px; font-size: 11pt; 
-                text-transform: uppercase; border-bottom: 2px solid #000; 
+                background: transparent; padding: 3px 10px; font-size: 9pt; 
+                text-transform: uppercase; border-bottom: 1px solid #000; 
                 margin: 0; font-weight: 800; 
             }
-            .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
-            .print-item { font-size: 11pt; margin-bottom: 5px; display: flex; flex-direction: column; }
-            .print-item b { text-transform: uppercase; font-size: 9pt; color: #444; margin-bottom: 2px; }
-            .print-item span { font-weight: 600; font-size: 12pt; color: #000; } 
+            .print-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; padding: 5px 10px; }
+            .print-item { font-size: 9pt; display: flex; flex-direction: column; }
+            .print-item b { text-transform: uppercase; font-size: 7pt; color: #555; margin-bottom: 0; }
+            .print-item span { font-weight: 600; font-size: 10pt; } 
+
+            .print-table-items { width: 100%; border-collapse: collapse; }
+            .print-table-items th { background: transparent; border-bottom: 2px solid #000; font-size: 9pt; padding: 6px 4px; text-align: left; }
+            .print-table-items td { font-size: 9pt; padding: 6px 4px; border-bottom: 1px dotted #ccc; }
 
             .print-warranty { 
-                font-size: 9pt; text-align: justify; border: 2px dashed #000; 
-                padding: 10px; line-height: 1.3; background: #f9f9f9; 
+                font-size: 8pt; text-align: justify; border: 1px solid #000; 
+                padding: 8px; line-height: 1.3; background: transparent; border-radius: 4px;
             }
 
             .print-value { 
-                padding: 15px; 
-                border: 3px solid #000; 
+                padding: 8px 15px; 
+                border: 2px solid #000; 
                 display: flex;             
                 justify-content: space-between; 
                 align-items: center;       
-                font-size: 18pt; 
+                font-size: 14pt; 
                 font-weight: 800; 
-                background: #eee; 
-                border-radius: 8px; 
+                background: transparent; 
+                border-radius: 4px; 
             }
 
             .print-footer { 
                 width: 100%; 
-                padding-top: 50px; 
-                padding-bottom: 10px; 
+                padding-top: 30px; 
+                padding-bottom: 5px; 
+                display: flex;
+                justify-content: space-around;
             }
             .sig-box { 
-                width: 45%; border-top: 3px solid #000; padding-top: 5px; 
-                text-align: center; font-weight: bold; font-size: 10pt; text-transform: uppercase; 
+                width: 40%; border-top: 1px solid #000; padding-top: 5px; 
+                text-align: center; font-weight: bold; font-size: 9pt; text-transform: uppercase; 
+                display: block !important;
             }
-            .sig-resp { float: left; }
-            .sig-cli { float: right; }
 
-            /* MODO RECIBO (80MM) - RESTAURADO */
-            .modo-recibo .print-container { height: auto; width: 80mm; border: none; margin: 0; padding: 5px; display: block; }
-            .modo-recibo .print-header { border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; flex-direction: column; text-align: center; align-items: center; }
-            .modo-recibo .print-logo { max-width: 60mm; max-height: 80px; margin-bottom: 5px; }
-            .modo-recibo .os-num { text-align: center; margin-top: 5px; }
-            .modo-recibo .os-num p { font-size: 10pt; }
-            .modo-recibo .os-num h2 { font-size: 16pt; margin: 5px 0; }
-            .modo-recibo .os-num span { font-size: 10pt; }
-            .modo-recibo .print-section { border: none; margin-bottom: 10px; border-radius: 0; }
-            .modo-recibo .print-section h3 { border: none; border-bottom: 1px solid #000; background: transparent; padding: 2px 0; font-size: 10pt; margin-top: 5px; }
-            .modo-recibo .print-grid { display: block; padding: 5px 0; gap: 0; }
-            .modo-recibo .print-item { margin-bottom: 5px; border-bottom: 1px dotted #ccc; padding-bottom: 2px; display: flex; flex-direction: row; justify-content: space-between; }
-            .modo-recibo .print-item b { font-size: 8pt; margin: 0; }
-            .modo-recibo .print-item span { font-size: 9pt; text-align: right; }
-            .modo-recibo .print-warranty { font-size: 7pt; border: none; border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 5px; background: transparent; margin-top: 10px; }
-            .modo-recibo .print-value { display: block; border: 2px dashed #000; text-align: center; margin: 10px 0; font-size: 14pt; padding: 10px; background: transparent; border-radius: 0; }
-            .modo-recibo .print-footer { padding-top: 20px; }
-            .modo-recibo .sig-box { width: 100%; float: none; margin-bottom: 30px; font-size: 9pt; border-top: 1px solid #000; }
+            /* MODO RECIBO (80MM) */
+            .modo-recibo .print-container { width: 72mm; padding: 0; gap: 4px; font-family: 'Courier New', Courier, monospace; }
+            .modo-recibo .print-header { border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 5px; }
+            .modo-recibo .print-logo { max-width: 35mm; margin-bottom: 5px; }
+            .modo-recibo .os-num { text-align: left; }
+            .modo-recibo .os-num h2 { font-size: 16pt; }
+            .modo-recibo .print-section { border: none; border-bottom: 1px dashed #000; border-radius: 0; margin-bottom: 5px; padding-bottom: 5px;}
+            .modo-recibo .print-section h3 { background: transparent; padding: 0; font-size: 8pt; border: none; text-decoration: underline; margin-bottom: 3px; }
+            .modo-recibo .print-grid { display: flex; flex-direction: column; gap: 3px; padding: 0; }
+            .modo-recibo .print-item { flex-direction: row; gap: 5px; align-items: baseline; }
+            .modo-recibo .print-item b { font-size: 7pt; }
+            .modo-recibo .print-item span { font-size: 8pt; }
+            
+            /* Ajuste Crítico: Itens do Recibo */
+            .modo-recibo .print-table-items { display: block !important; width: 100%; margin-bottom: 5px; }
+            .modo-recibo .print-table-items thead { display: none; }
+            .modo-recibo .print-table-items tr { 
+                display: block !important; 
+                border-bottom: 1px dashed #ccc; 
+                padding: 6px 0; 
+            }
+            .modo-recibo .print-table-items td { 
+                display: inline-block !important; 
+                border: none !important; 
+                padding: 0 !important; 
+                text-align: left !important;
+                font-family: 'Courier New', Courier, monospace;
+                word-break: normal !important;
+                white-space: nowrap !important;
+            }
+            .modo-recibo .print-table-items td:nth-child(1) { width: 100% !important; font-weight: bold; font-size: 8pt; margin-bottom: 2px; white-space: normal !important; display: block !important; } /* Medida */
+            .modo-recibo .print-table-items td:nth-child(2) { width: 100% !important; font-size: 7pt; color: #000; margin-bottom: 4px; white-space: normal !important; display: block !important; } /* Marca */
+            .modo-recibo .print-table-items td:nth-child(3) { width: 20% !important; font-size: 8pt; } /* Qtd */
+            .modo-recibo .print-table-items td:nth-child(3)::before { content: 'Q: '; }
+            .modo-recibo .print-table-items td:nth-child(4) { width: 40% !important; font-size: 8pt; } /* Unit */
+            .modo-recibo .print-table-items td:nth-child(4)::before { content: 'Un: '; }
+            .modo-recibo .print-table-items td:nth-child(5) { 
+                width: 35% !important; 
+                text-align: right !important; 
+                font-size: 8pt; 
+                font-weight: bold; 
+            }
+            
+            .modo-recibo .print-warranty { font-size: 7pt; padding: 4px 0; border: none; border-bottom: 1px dashed #000; text-align: left; }
+            .modo-recibo .print-value { font-size: 12pt; padding: 5px 0; border: none; border-bottom: 1px dashed #000; margin: 0 0 10px 0; border-radius: 0; background: transparent; }
+            .modo-recibo .print-footer { flex-direction: column; gap: 20px; padding-top: 10px; align-items: center; }
+            .modo-recibo .sig-box { width: 80%; border-top: 1px dashed #000; font-size: 7pt; }
         }
     </style>
 </head>
@@ -522,32 +577,49 @@
                             
                             <div class="grid-2">
                                 <div class="field"><label>Marca (Fabricante)</label><input type="text" id="os-marca" required placeholder="Ex: Vipal, Maggion..."></div>
-                                <div class="field"><label>Modelo / Medida</label>
-                                    <select id="os-medida" required>
-                                        <option value="">Selecione...</option>
-                                        <option value="Pneu Broz traseiro 110/90-17">Pneu Broz traseiro 110/90-17</option>
-                                        <option value="Pneu Broz dianteiro 90/90-19">Pneu Broz dianteiro 90/90-19</option>
-                                        <option value="Pneu Titan traseiro 90/90-18">Pneu Titan traseiro 90/90-18</option>
-                                        <option value="Pneu Titan dianteiro 2.75-18">Pneu Titan dianteiro 2.75-18</option>
-                                        <option value="Pneu Biz traseiro 80/100-14">Pneu Biz traseiro 80/100-14</option>
-                                        <option value="Pneu Biz dianteiro 2.50-17">Pneu Biz dianteiro 2.50-17</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="grid-3">
-                                <div class="field"><label>Preço Serviço (R$)</label>
-                                    <input type="text" id="os-preco" onkeyup="mascaraMoeda(this)" required placeholder="0,00">
-                                </div>
-                                <div class="field"><label>Quantidade</label>
-                                    <input type="number" id="os-qtd" value="1" min="1" required>
-                                </div>
                                 <div class="field"><label>Status Inicial</label>
                                     <select id="os-status">
                                         <option>Aguardando</option>
                                         <option>Na Raspagem</option>
                                         <option>Pronto</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div style="background: #111; padding: 20px; border-radius: 15px; border: 1px dashed #333; margin-bottom: 20px;">
+                                <h3 style="font-size: 0.7rem; color: var(--dim); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px;">Adicionar Itens (Pneus)</h3>
+                                <div class="grid-4" style="grid-template-columns: 2fr 1fr 1fr auto; align-items: flex-end;">
+                                    <div class="field">
+                                        <label>Modelo / Medida</label>
+                                        <select id="os-medida">
+                                            <option value="">Selecione...</option>
+                                            <option value="Pneu Broz traseiro 110/90-17">Pneu Broz traseiro 110/90-17</option>
+                                            <option value="Pneu Broz dianteiro 90/90-19">Pneu Broz dianteiro 90/90-19</option>
+                                            <option value="Pneu Titan traseiro 90/90-18">Pneu Titan traseiro 90/90-18</option>
+                                            <option value="Pneu Titan dianteiro 2.75-18">Pneu Titan dianteiro 2.75-18</option>
+                                            <option value="Pneu Biz traseiro 80/100-14">Pneu Biz traseiro 80/100-14</option>
+                                            <option value="Pneu Biz dianteiro 2.50-17">Pneu Biz dianteiro 2.50-17</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <label>Quantidade</label>
+                                        <input type="number" id="os-qtd" value="1" min="1">
+                                    </div>
+                                    <div class="field">
+                                        <label>Preço Unit. (R$)</label>
+                                        <input type="text" id="os-preco-item" onkeyup="mascaraMoeda(this)" placeholder="0,00">
+                                    </div>
+                                    <button type="button" class="btn btn-add" style="margin-top: 0; height: 45px; padding: 0 20px;" onclick="addItemOS()">+</button>
+                                </div>
+
+                                <div id="lista-itens-selecionados" style="margin-top: 20px;">
+                                    <!-- Itens aparecerão aqui -->
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="field"><label>Total do Serviço (R$)</label>
+                                    <input type="text" id="os-preco" onkeyup="mascaraMoeda(this)" required placeholder="0,00" readonly style="background: #111; color: var(--primary); font-weight: 800; font-size: 1.2rem;">
                                 </div>
                             </div>
                             
@@ -655,11 +727,22 @@
                     </div>
                 </div>
                 <div class="print-section">
-                    <h3>Dados do Serviço / Pneu</h3>
-                    <div class="print-grid">
-                        <div class="print-item"><b>Marca do Pneu:</b><span id="p-marca">---</span></div>
-                        <div class="print-item"><b>Modelo/Medida:</b><span id="p-medida">---</span></div>
-                        <div class="print-item"><b>Quantidade:</b><span id="p-qtd">---</span></div>
+                    <h3>Dados do Serviço / Pneus</h3>
+                    <div style="padding: 10px;">
+                        <table class="print-table-items">
+                            <thead>
+                                <tr>
+                                    <th>Modelo/Medida</th>
+                                    <th>Marca</th>
+                                    <th>Qtd</th>
+                                    <th>V. Unit</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="p-lista-itens">
+                                <!-- Dinâmico -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="print-warranty">
@@ -680,22 +763,7 @@
         </div>
     </div>
 
-    <script>
-        // Rastreador de erros global para ajudar no diagnóstico no Vercel
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            console.error("ERRO GLOBAL:", msg, "Linha:", lineNo);
-            // Mostra um alerta apenas se for um erro crítico de carregamento ou execução
-            if (msg.toLowerCase().includes("script error") || msg.toLowerCase().includes("firebase")) {
-                alert("Erro de Sistema: " + msg + "\nVerifique o console do navegador ou as configurações do Firebase.");
-            }
-            return false;
-        };
-    </script>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
         // CONFIGURAÇÃO DO FIREBASE (Sua conta)
         const firebaseConfig = {
             apiKey: "AIzaSyADFrQH__itlLVX4s3svENktUurejWpD-g",
@@ -707,17 +775,92 @@
             measurementId: "G-3JWK1H79LC"
         };
 
-        let app, auth, db;
-        try {
-            if (window.location.protocol === 'file:') {
-                alert("AVISO: O sistema pode não funcionar corretamente quando aberto diretamente pelo arquivo (file://). Por favor, use um servidor local (ex: Live Server ou XAMPP).");
-            }
-            app = initializeApp(firebaseConfig);
+        // --- LÓGICA DE MOCK PARA DESENVOLVIMENTO LOCAL ---
+        const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
+        let db, auth;
+        let _addDoc, _onSnapshot, _deleteDoc, _doc, _updateDoc, _collection, _query, _orderBy, _limit, _onAuthStateChanged, _signInWithEmailAndPassword, _signOut;
+
+        if (isDev) {
+            // MOCK DATABASE ENGINE
+            const mockStorage = {
+                get: (col) => JSON.parse(localStorage.getItem('mock_' + col) || '[]'),
+                save: (col, data) => localStorage.setItem('mock_' + col, JSON.stringify(data)),
+                listeners: {}
+            };
+
+            const notify = (col) => {
+                if (mockStorage.listeners[col]) {
+                    const data = mockStorage.get(col);
+                    mockStorage.listeners[col].forEach(cb => cb({ docs: data.map(d => ({ id: d.firebaseId || d.id, data: () => d })) }));
+                }
+            };
+
+            _collection = (d, name) => name;
+            _doc = (d, col, id) => ({ col, id });
+            _query = (col) => col;
+            _orderBy = () => {};
+            _limit = () => {};
+
+            _addDoc = async (col, data) => {
+                const items = mockStorage.get(col);
+                const newItem = { ...data, firebaseId: 'mock_' + Date.now() };
+                items.push(newItem);
+                mockStorage.save(col, items);
+                notify(col);
+                return newItem;
+            };
+
+            _onSnapshot = (col, cb) => {
+                if (!mockStorage.listeners[col]) mockStorage.listeners[col] = [];
+                mockStorage.listeners[col].push(cb);
+                notify(col);
+                return () => { mockStorage.listeners[col] = mockStorage.listeners[col].filter(l => l !== cb); };
+            };
+
+            _updateDoc = async (docRef, data) => {
+                const items = mockStorage.get(docRef.col);
+                const idx = items.findIndex(i => (i.firebaseId || i.id) === docRef.id);
+                if (idx !== -1) {
+                    items[idx] = { ...items[idx], ...data };
+                    mockStorage.save(docRef.col, items);
+                    notify(docRef.col);
+                }
+            };
+
+            _deleteDoc = async (docRef) => {
+                const items = mockStorage.get(docRef.col);
+                const newItems = items.filter(i => (i.firebaseId || i.id) !== docRef.id);
+                mockStorage.save(docRef.col, newItems);
+                notify(docRef.col);
+            };
+
+            _onAuthStateChanged = (a, cb) => {
+                const user = JSON.parse(localStorage.getItem('mock_user') || 'null');
+                setTimeout(() => cb(user), 500);
+            };
+
+            _signInWithEmailAndPassword = async (a, email) => {
+                const user = { email: email || 'dev@teste.com', uid: 'dev-123' };
+                localStorage.setItem('mock_user', JSON.stringify(user));
+                location.reload();
+            };
+
+            _signOut = async () => {
+                localStorage.removeItem('mock_user');
+                location.reload();
+            };
+
+            db = {}; auth = {};
+        } else {
+            // FIREBASE REAL
+            const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
-        } catch (e) {
-            console.error("Erro ao inicializar Firebase:", e);
-            alert("Erro crítico ao carregar o banco de dados. Verifique sua conexão ou configurações.");
+            _addDoc = addDoc; _onSnapshot = onSnapshot; _deleteDoc = deleteDoc; _doc = doc;
+            _updateDoc = updateDoc; _collection = collection; _query = query;
+            _orderBy = orderBy; _limit = limit; _onAuthStateChanged = onAuthStateChanged;
+            _signInWithEmailAndPassword = signInWithEmailAndPassword; _signOut = signOut;
         }
 
         // VARIÁVEIS GLOBAIS DE DADOS
@@ -726,6 +869,7 @@
         let listaEstoque = [];
         let listaFin = [];
         let myChart = null;
+        let itensAtuaisOS = []; // Lista temporária de itens na criação da OS
 
         // Elementos de Login e App
         const loginScreen = document.getElementById('login-screen');
@@ -735,7 +879,7 @@
 
         // Monitorar Login
         if (auth) {
-            onAuthStateChanged(auth, (user) => {
+                    _onAuthStateChanged(auth, (user) => {
                 if (user) {
                     loginScreen.style.display = 'none';
                     appContent.style.display = 'flex';
@@ -754,19 +898,18 @@
         // ---------------------------------------------------------
         function iniciarSincronizacaoEmTempoReal() {
             // 1. CLIENTES
-            const qCli = query(collection(db, "clientes"), orderBy("nome"));
-            onSnapshot(qCli, (snapshot) => {
+            const qCli = _query(_collection(db, "clientes"), _orderBy("nome"));
+            _onSnapshot(qCli, (snapshot) => {
                 listaClientes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderClientes();
                 updateClientSuggestions();
             }, (error) => {
                 console.error("Erro ao carregar clientes:", error);
-                // alert("Erro ao carregar clientes: " + error.message);
             });
 
             // 2. OS
-            const qOS = query(collection(db, "os")); 
-            onSnapshot(qOS, (snapshot) => {
+            const qOS = _query(_collection(db, "os")); 
+            _onSnapshot(qOS, (snapshot) => {
                 listaOS = snapshot.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() }));
                 listaOS.sort((a,b) => b.id - a.id);
                 renderOS();
@@ -774,14 +917,14 @@
             });
 
             // 3. ESTOQUE
-            onSnapshot(collection(db, "estoque"), (snapshot) => {
+            _onSnapshot(_collection(db, "estoque"), (snapshot) => {
                 listaEstoque = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderStock();
             });
 
             // 4. FINANCEIRO
-            const qFin = query(collection(db, "financeiro"), orderBy("createdAt", "desc"), limit(50));
-            onSnapshot(qFin, (snapshot) => {
+            const qFin = _query(_collection(db, "financeiro"), _orderBy("createdAt", "desc"), _limit(50));
+            _onSnapshot(qFin, (snapshot) => {
                 listaFin = snapshot.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() }));
                 renderFinance();
                 updateDashboard();
@@ -829,12 +972,12 @@
             };
             
             try {
-                await addDoc(collection(db, "clientes"), novoCliente);
+                await _addDoc(_collection(db, "clientes"), novoCliente);
                 e.target.reset();
-                alert("Cliente salvo na nuvem com sucesso!");
+                alert("Cliente salvo na nuvem!");
             } catch (err) {
-                console.error("Erro detalhado ao salvar:", err);
-                alert("ERRO AO SALVAR:\n" + err.message + "\n\nDica: Verifique se as 'Regras de Segurança' do seu Firestore permitem gravação.");
+                console.error("Erro ao salvar:", err);
+                alert("Erro ao salvar. Verifique sua conexão.");
             }
         });
 
@@ -859,9 +1002,64 @@
         }
 
         // --- OS (ORDEM DE SERVIÇO) ---
+        window.addItemOS = function() {
+            const medida = document.getElementById('os-medida').value;
+            const qtd = parseInt(document.getElementById('os-qtd').value);
+            const precoItem = limparValor(document.getElementById('os-preco-item').value);
+
+            if(!medida || isNaN(qtd) || qtd <= 0) {
+                alert("Selecione a medida e a quantidade corretamente.");
+                return;
+            }
+
+            itensAtuaisOS.push({ medida, qtd, preco: precoItem });
+            renderItensOS();
+            
+            // Limpa campos
+            document.getElementById('os-medida').value = "";
+            document.getElementById('os-qtd').value = "1";
+            document.getElementById('os-preco-item').value = "";
+        }
+
+        window.removeItemOS = function(index) {
+            itensAtuaisOS.splice(index, 1);
+            renderItensOS();
+        }
+
+        function renderItensOS() {
+            const container = document.getElementById('lista-itens-selecionados');
+            let total = 0;
+            
+            container.innerHTML = itensAtuaisOS.map((it, idx) => {
+                const subtotal = it.qtd * it.preco;
+                total += subtotal;
+                return `
+                    <div class="item-row-os">
+                        <div class="item-info-os">
+                            <b>${it.medida}</b>
+                            <span>Qtd: ${it.qtd} | Unit: R$ ${it.preco.toLocaleString('pt-BR', {minimumFractionDigits:2})}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <b style="color:var(--success)">R$ ${subtotal.toLocaleString('pt-BR', {minimumFractionDigits:2})}</b>
+                            <button type="button" class="btn-del-item" onclick="removeItemOS(${idx})"><i class="material-icons">delete</i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Atualiza total geral do form
+            const inputTotal = document.getElementById('os-preco');
+            inputTotal.value = total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+        }
+
         document.getElementById('formOS').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            if(itensAtuaisOS.length === 0) {
+                alert("Adicione pelo menos um item pneu na OS!");
+                return;
+            }
+
             const inputVal = document.getElementById('os-cliente').value;
             let clienteEncontrado = listaClientes.find(c => {
                 const nomeCompleto = `${c.nome || ''} - ${c.doc || ''}`;
@@ -875,10 +1073,8 @@
                 return; 
             }
 
-            const preco = limparValor(document.getElementById('os-preco').value);
-            // Captura o tipo de impressão ou padrão "saveonly"
+            const precoTotal = limparValor(document.getElementById('os-preco').value);
             const printType = e.target.dataset.printType || 'saveonly';
-
             const idVisual = Math.floor(1000 + Math.random() * 9000);
 
             const novaOS = {
@@ -890,19 +1086,16 @@
                 fone: clienteEncontrado.fone,
                 placa: clienteEncontrado.placa,
                 marca: document.getElementById('os-marca').value,
-                medida: document.getElementById('os-medida').value,
-                qtd: document.getElementById('os-qtd').value,
-                preco: preco,
+                itens: itensAtuaisOS, // Novo Array de Itens
+                preco: precoTotal,
                 status: document.getElementById('os-status').value,
                 data: new Date().toLocaleDateString('pt-BR'),
                 createdAt: Date.now() 
             };
 
             try {
-                // 1. Salvar OS
-                await addDoc(collection(db, "os"), novaOS);
+                await _addDoc(_collection(db, "os"), novaOS);
 
-                // 2. Lançar Financeiro
                 const finEntry = { 
                     createdAt: Date.now(), 
                     data: novaOS.data, 
@@ -910,9 +1103,8 @@
                     val: novaOS.preco, 
                     tipo: 'in' 
                 };
-                await addDoc(collection(db, "financeiro"), finEntry);
+                await _addDoc(_collection(db, "financeiro"), finEntry);
 
-                // 3. Imprimir SE NECESSÁRIO
                 if(printType !== 'saveonly') {
                     gerarDocumento(novaOS, printType);
                 } else {
@@ -920,32 +1112,40 @@
                 }
 
                 e.target.reset();
-                document.getElementById('os-qtd').value = 1;
+                itensAtuaisOS = [];
+                renderItensOS();
 
             } catch(err) {
-                console.error("Erro ao salvar OS:", err);
-                alert("ERRO AO SALVAR OS:\n" + err.message);
+                console.error(err);
+                alert("Erro ao salvar OS. Tente novamente.");
             }
         });
 
         function renderOS() {
-            document.getElementById('lista-prod').innerHTML = listaOS.map(os => `
-                <tr>
-                    <td>#${os.id}</td>
-                    <td>${os.qtd || 1}</td>
-                    <td style="font-size:0.8rem">${os.medida}</td>
-                    <td>
-                        <div>${os.cliente}</div>
-                        <div style="font-size:0.65rem; color:#666">${os.doc || ''}</div>
-                    </td>
-                    <td style="color:var(--primary)">${os.status}</td>
-                    <td>
-                        <button class="action-btn" onclick="reimprimir('${os.firebaseId}', 'a4')">🖨️</button>
-                        <button class="action-btn" onclick="reimprimir('${os.firebaseId}', 'recibo')">🧾</button>
-                        <button class="action-btn btn-del" onclick="deletarItem('os', '${os.firebaseId}')">🗑️</button>
-                    </td>
-                </tr>
-            `).join('');
+            document.getElementById('lista-prod').innerHTML = listaOS.map(os => {
+                // Se for OS antiga (sem .itens), cria array fake
+                const itens = os.itens || [{ medida: os.medida, qtd: os.qtd }];
+                const qtdTotal = itens.reduce((acc, i) => acc + parseInt(i.qtd || 0), 0);
+                const descItens = itens.map(i => `${i.qtd}x ${i.medida}`).join('<br>');
+
+                return `
+                    <tr>
+                        <td>#${os.id}</td>
+                        <td>${qtdTotal}</td>
+                        <td style="font-size:0.75rem">${descItens}</td>
+                        <td>
+                            <div>${os.cliente}</div>
+                            <div style="font-size:0.65rem; color:#666">${os.doc || ''}</div>
+                        </td>
+                        <td style="color:var(--primary)">${os.status}</td>
+                        <td>
+                            <button class="action-btn" onclick="reimprimir('${os.firebaseId}', 'a4')">🖨️</button>
+                            <button class="action-btn" onclick="reimprimir('${os.firebaseId}', 'recibo')">🧾</button>
+                            <button class="action-btn btn-del" onclick="deletarItem('os', '${os.firebaseId}')">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         window.reimprimir = function(firebaseId, tipo) {
@@ -961,8 +1161,8 @@
 
             if(existe) {
                 const novaQtd = parseInt(existe.qtd) + parseInt(document.getElementById('st-qtd').value);
-                const docRef = doc(db, "estoque", existe.id);
-                await updateDoc(docRef, { qtd: novaQtd });
+                const docRef = _doc(db, "estoque", existe.id);
+                await _updateDoc(docRef, { qtd: novaQtd });
                 alert("Quantidade atualizada!");
             } else {
                 const item = {
@@ -970,7 +1170,7 @@
                     qtd: parseInt(document.getElementById('st-qtd').value),
                     min: parseInt(document.getElementById('st-min').value)
                 };
-                await addDoc(collection(db, "estoque"), item);
+                await _addDoc(_collection(db, "estoque"), item);
                 alert("Item cadastrado!");
             }
             e.target.reset();
@@ -994,8 +1194,8 @@
         window.alterarEstoque = async function(docId, qtdAtual, delta) {
             const novaQtd = qtdAtual + delta;
             if(novaQtd < 0) return;
-            const docRef = doc(db, "estoque", docId);
-            await updateDoc(docRef, { qtd: novaQtd });
+            const docRef = _doc(db, "estoque", docId);
+            await _updateDoc(docRef, { qtd: novaQtd });
         };
 
         // --- FINANCEIRO ---
@@ -1012,7 +1212,7 @@
                 tipo: document.getElementById('f-tipo').value
             };
             
-            await addDoc(collection(db, "financeiro"), entry);
+            await _addDoc(_collection(db, "financeiro"), entry);
             e.target.reset(); 
             document.getElementById('f-val').value = "";
         });
@@ -1029,7 +1229,7 @@
         window.deletarItem = async function(colecao, id) {
             if(confirm("Tem certeza que deseja excluir?")) {
                 try {
-                    await deleteDoc(doc(db, colecao, id));
+                    await _deleteDoc(_doc(db, colecao, id));
                 } catch(e) {
                     alert("Erro ao excluir: " + e.message);
                 }
@@ -1067,29 +1267,16 @@
             const btn = document.getElementById('btn-entrar');
             btn.innerText = "VERIFICANDO...";
             errorMsg.style.display = 'none';
-            if (!auth) {
-                alert("O sistema de autenticação não foi carregado corretamente.");
-                return;
-            }
-            signInWithEmailAndPassword(auth, email, pass)
+            _signInWithEmailAndPassword(auth, email, pass)
                 .then(() => { btn.innerText = "ENTRAR NO SISTEMA"; })
                 .catch((error) => {
                     btn.innerText = "ENTRAR NO SISTEMA";
                     errorMsg.style.display = 'block';
                     console.error("Erro login:", error);
-                    
-                    // Tratamento de erros específicos do Firebase
-                    if (error.code === 'auth/unauthorized-domain') {
-                        alert("ERRO FIREBASE: Este domínio não está autorizado no console do Firebase. Adicione o seu domínio do Vercel na lista de domínios permitidos.");
-                    } else if (error.code === 'auth/configuration-not-found') {
-                        alert("ERRO FIREBASE: O método de login por E-mail/Senha não está ativado no seu projeto Firebase.");
-                    } else if (error.code === 'auth/network-request-failed') {
-                        alert("ERRO DE REDE: Falha ao conectar com o Firebase. Verifique sua internet.");
-                    }
                 });
         });
         document.getElementById('btn-logout').addEventListener('click', () => {
-            if(confirm("Deseja realmente sair?")) signOut(auth);
+            if(confirm("Deseja realmente sair?")) _signOut(auth);
         });
 
         // --- HELPERS E IMPRESSÃO ---
@@ -1120,11 +1307,28 @@
             document.getElementById('p-fone').innerText = os.fone || "---";
             document.getElementById('p-placa').innerText = os.placa || "---";
             document.getElementById('p-endereco').innerText = os.endereco || "Não informado"; 
-            document.getElementById('p-marca').innerText = os.marca;
-            document.getElementById('p-medida').innerText = os.medida;
-            document.getElementById('p-qtd').innerText = os.qtd || "1";
+            
+            // Renderizar lista de itens na impressão
+            const itens = os.itens || [{ medida: os.medida, qtd: os.qtd, preco: os.preco }];
+            document.getElementById('p-lista-itens').innerHTML = itens.map(it => {
+                const desc = `${it.qtd}x ${it.medida} (${os.marca})`;
+                const total = ((it.qtd || 1) * (it.preco || 0)).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                const unit = (it.preco || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                
+                return `
+                    <tr>
+                        <td style="font-weight:bold">${it.medida}</td>
+                        <td>${os.marca}</td>
+                        <td style="text-align:center">${it.qtd}</td>
+                        <td style="text-align:right">R$ ${unit}</td>
+                        <td style="text-align:right; font-weight:bold">R$ ${total}</td>
+                    </tr>
+                `;
+            }).join('');
+
             let valorPrint = (typeof os.preco === 'number') ? os.preco : 0;
             document.getElementById('p-valor').innerText = valorPrint.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            
             const printArea = document.getElementById('printArea');
             if(tipo === 'recibo') printArea.classList.add('modo-recibo');
             else printArea.classList.remove('modo-recibo');
