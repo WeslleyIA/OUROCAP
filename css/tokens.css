@@ -1,0 +1,81 @@
+:root {
+    /* Brand & Accent Palette - Studio Champagne Gold */
+    --gold-200: #FBF0CF;
+    --gold-300: #F5DC94;
+    --gold-400: #ECC765;
+    --gold-500: #DCAE38;
+    --gold-600: #B58820;
+    --gold-glow: rgba(220, 174, 56, 0.12);
+    --gold-border: rgba(220, 174, 56, 0.24);
+
+    /* Backgrounds & Precision Obsidian Surfaces */
+    --bg-base: #090B0F;
+    --bg-subtle: #0F1218;
+    --bg-surface: #141822;
+    --bg-surface-elevated: #1B212E;
+    --bg-surface-hover: #22293A;
+    --bg-glass-header: rgba(11, 14, 20, 0.88);
+    --bg-glass-dock: rgba(15, 18, 26, 0.92);
+    --bg-glass-card: rgba(20, 24, 34, 0.85);
+    --bg-input-readonly: rgba(0, 0, 0, 0.25);
+    --bg-row-hover: rgba(255, 255, 255, 0.02);
+
+    /* Precision Hairline Borders */
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-default: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --card-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+
+    /* Focus Ring */
+    --focus-ring: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--gold-500);
+
+    /* Typography Hierarchy */
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --text-faint: #334155;
+    --text-inverse: #090B0F;
+
+    /* Semantics (Restrained & Subtle) */
+    --success: #10B981;
+    --success-bg: rgba(16, 185, 129, 0.08);
+    --success-border: rgba(16, 185, 129, 0.20);
+
+    --danger: #F43F5E;
+    --danger-bg: rgba(244, 63, 94, 0.08);
+    --danger-border: rgba(244, 63, 94, 0.20);
+
+    --info: #38BDF8;
+    --info-bg: rgba(56, 189, 248, 0.08);
+    --info-border: rgba(56, 189, 248, 0.20);
+
+    /* Spacing Scale (8pt Grid) */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+
+    /* Radii */
+    --radius-xs: 6px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+    --radius-full: 9999px;
+
+    /* Lighting & Organic Depth */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.7);
+    --shadow-gold: 0 6px 20px -4px rgba(220, 174, 56, 0.25);
+    --shadow-dock: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 1px rgba(255, 255, 255, 0.15);
+
+    /* Motion */
+    --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 140ms;
+    --duration-normal: 200ms;
+}
